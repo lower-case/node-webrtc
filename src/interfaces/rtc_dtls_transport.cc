@@ -175,6 +175,10 @@ RTCDtlsTransport* RTCDtlsTransport::Create(
   auto env = constructor().Env();
   Napi::HandleScope scope(env);
 
+  if (factory == nullptr) {
+    factory = PeerConnectionFactory::GetOrCreateDefault();
+  }
+
   auto object = constructor().New({
     factory->Value(),
     Napi::External<rtc::scoped_refptr<webrtc::DtlsTransportInterface>>::New(env, &transport)

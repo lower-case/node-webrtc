@@ -155,6 +155,10 @@ MediaStreamTrack* MediaStreamTrack::Create(
   auto env = constructor().Env();
   Napi::HandleScope scope(env);
 
+  if (factory == nullptr) {
+    factory = PeerConnectionFactory::GetOrCreateDefault();
+  }
+
   auto mediaStreamTrack = constructor().New({
     factory->Value(),
     Napi::External<rtc::scoped_refptr<webrtc::MediaStreamTrackInterface>>::New(env, &track)
